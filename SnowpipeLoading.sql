@@ -1,4 +1,4 @@
-use role sysadmin;
+use role accountadmin;
 use database etl_pipeline_db;
 use schema etl_pipeline_bronze_sch;
 

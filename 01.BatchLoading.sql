@@ -71,4 +71,4 @@ pattern = '.*/employee_.*ence[.]csv'  ----employee***_absence.csv
 file_format = (type='csv' field_delimiter=',' skip_header=1);
 
 select * from etl_pipeline_db.etl_pipeline_bronze_sch.bronze_employee_absense;
-
+select count(*) from etl_pipeline_db.etl_pipeline_bronze_sch.bronze_employee_absense;
