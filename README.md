@@ -35,9 +35,12 @@ This project demonstrates a complete end-to-end ELT pipeline built entirely on S
 - `BRONZE_EMPLOYEE_PARQUET_PIPE` — Snowpipe for automated/manual Parquet ingestion
 
 ### Silver Layer
-- `SILVER_EMPLOYEE_DATA_PARQUET` — Parsed employee data with flattened survey scores and ETL metadata
+- `SILVER_EMPLOYEE_DATA_PARQUET` — Unified silver table fed by all three sources (Parquet, JSON, CSV)
 - `SILVER_EMP_PARQUET_DT` — Dynamic Table equivalent (auto-refreshing)
 - `BRONZE_EMP_PARQUET_STREAM` — Change Data Capture stream on the bronze table
+- `LOAD_SILVER_FROM_JSON()` — Procedure to parse JSON source into silver
+- `LOAD_SILVER_FROM_CSV()` — Procedure to load CSV source into silver (NULL survey scores)
+- `LOAD_ALL_SOURCES_TO_SILVER()` — Master orchestrator for all three sources
 
 ### Gold Layer
 - `EMPLOYEE_DEMOGRAPHICS_BY_DEPARTMENT` — Department-level demographic aggregations
@@ -65,6 +68,7 @@ This project demonstrates a complete end-to-end ELT pipeline built entirely on S
 | `06.DynamicTables.sql` | Declarative pipeline using Dynamic Tables (auto-refresh alternative) |
 | `07.Monitoring.sql` | Pipe refresh, task execution, event table queries, dynamic table monitoring |
 | `08.TrackDataQuality.sql` | Data quality stored procedures (null checks, range validation) |
+| `09.ExtendMultiSource.sql` | Extend Silver/Gold to process all sources (CSV, JSON, Parquet) via unified pipeline |
 
 ## Pipeline Patterns Demonstrated
 
@@ -76,6 +80,9 @@ CDC stream detects new bronze rows → Root task loads Silver → Successor task
 
 ### Pattern 3: Dynamic Tables (File 06)
 Declarative SQL definitions with `TARGET_LAG = '5 minutes'`. Snowflake manages refresh scheduling automatically — no tasks or streams needed.
+
+### Pattern 4: Multi-Source Unified Pipeline (File 09)
+All three bronze sources (CSV, JSON, Parquet) feed into a single silver table with `source_object` tracking lineage. Gold aggregations naturally handle mixed sources — demographics include all rows, survey averages exclude NULLs from CSV via `NULLIFZERO()`.
 
 ## Data Model
 
@@ -91,7 +98,7 @@ The source dataset is **employee HR data** containing:
    CREATE DATABASE IF NOT EXISTS ETL_PIPELINE_DB;
    ```
 
-2. **Execute files in order** (01 → 08). Each file is self-contained with environment setup at the top.
+2. **Execute files in order** (01 → 09). Each file is self-contained with environment setup at the top.
 
 3. **Upload data files** to `@ETL_PIPELINE_DB.ETL_PIPELINE_BRONZE_SCH.BRONZE_STG`:
    - `employee_*_absence.csv`
@@ -105,7 +112,7 @@ The source dataset is **employee HR data** containing:
 ## Concepts Covered
 
 - Medallion Architecture (Bronze/Silver/Gold)
-- Multi-format ingestion (CSV, JSON, Parquet)
+- Multi-format ingestion (CSV, JSON, Parquet) with unified Silver layer
 - COPY INTO with pattern matching and MATCH_BY_COLUMN_NAME
 - Snowpipe (manual refresh mode)
 - VARIANT parsing with PARSE_JSON / TRY_TO_NUMBER
@@ -121,4 +128,7 @@ The source dataset is **employee HR data** containing:
 
 - Snowflake account with ACCOUNTADMIN access
 - Warehouse: `COMPUTE_WH`
-- Sample employee data files (Parquet partitioned as `employee_data_part_*.parquet`)
+- Sample employee data files:
+  - Parquet: `employee_data_part_*.parquet`
+  - JSON: `employee_data_*.json`
+  - CSV: `employee_*_absence.csv`
