@@ -3,7 +3,6 @@ grant execute task on account to role sysadmin;
 
 use database etl_pipeline_db;
 use warehouse compute_wh;
-
 show schemas;
 
 create schema if not exists etl_pipeline_tasks_sch;

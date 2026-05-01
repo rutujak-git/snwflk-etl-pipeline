@@ -8,8 +8,7 @@ use schema etl_pipeline_db.etl_pipeline_gold_sch;
 show tables in schema etl_pipeline_db.etl_pipeline_silver_sch;
 select count(*) as silver_row_count 
     from etl_pipeline_silver_sch.silver_employee_data_parquet;
-
--- ================================================================
+-- ==================================================================
 -- APPROACH 1: CTE-based transformation
 -- Create demographics by department table using a CTE
 -- ================================================================

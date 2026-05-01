@@ -334,3 +334,4 @@ order by name;
 -- Pause the enhanced tasks to prevent unwanted executions
 alter task etl_pipeline_db.etl_pipeline_tasks_sch.t_silver_from_bronze_stream suspend;
 alter task etl_pipeline_db.etl_pipeline_tasks_sch.t_gold_refresh_after_silver suspend;
+

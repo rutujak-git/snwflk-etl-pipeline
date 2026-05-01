@@ -5,6 +5,7 @@ use schema etl_pipeline_bronze_sch;
 show stages like 'BRONZE_STG';
 show tables like 'bronze_employee_data_parquet';
 
+
 truncate table bronze_employee_data_parquet;
 
 CREATE OR REPLACE PIPE etl_pipeline_db.etl_pipeline_bronze_sch.bronze_employee_parquet_pipe

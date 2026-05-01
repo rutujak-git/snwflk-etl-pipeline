@@ -6,6 +6,7 @@ use schema etl_pipeline_db.etl_pipeline_silver_sch;
 
 show tables in schema etl_pipeline_bronze_sch;
 
+
 -- ================================================================
 -- STAGING TABLE CREATION
 -- Create a staging table using the bronze table structure as a base

@@ -11,7 +11,6 @@ truncate table etl_pipeline_bronze_sch.bronze_employee_data_parquet;
 -- ================================================================
 -- DYNAMIC TABLES: Define refreshable pipeline objects
 -- ================================================================
-
 -- Silver-equivalent dynamic table parsing engagement_survey
 create or replace dynamic table etl_pipeline_silver_sch.silver_emp_parquet_dt
     target_lag = '5 minutes'

@@ -7,6 +7,7 @@ use database etl_pipeline_db;
 create schema if not exists etl_pipeline_db.etl_pipeline_bronze_sch;
 use schema etl_pipeline_db.etl_pipeline_bronze_sch;
 
+
 ---------------------------- Create Internal Stage to upload batch data from UI -----------
 create or replace stage etl_pipeline_db.etl_pipeline_bronze_sch.bronze_stg;
 
